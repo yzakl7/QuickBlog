@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import ViewPosts from "../view-posts/ViewPosts";
 
+import firebase from "firebase";
+
 export default class Main extends React.Component {
   state = { currentUser: null };
 
@@ -16,15 +18,15 @@ export default class Main extends React.Component {
     super(props);
   }
   componentDidMount() {
-    this.setState({ currentUser: this.props.location.state.email });
-    console.log(this.props);
+    const { currentUser } = firebase.auth();
+    this.setState({ currentUser });
   }
   render() {
     const { currentUser, error, data } = this.state;
     return (
       <View style={styles.container}>
-        {currentUser ? <ViewPosts currentUser={currentUser} /> : null}
-        <Text>{JSON.stringify(this.props.location.state.email)}</Text>
+        <ViewPosts />
+        <Text />
       </View>
     );
   }
@@ -32,14 +34,7 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ced6e3",
-    alignItems: "stretch"
+    backgroundColor: "gray",
+    alignItems: "center"
   }
 });
-/*
-#f5f8ff = blancos
-#7babed = encabezados
-#ff72ad = Attention
-#ffcc41 = warning
-#ced6e3 = fondo
-*/

@@ -43,7 +43,12 @@ export default class ViewPosts extends React.Component {
             style={styles.container}
             data={this.state.posts}
             renderItem={({ item }) => (
-              <ListItem title={item.title} author={item.author} />
+              <ListItem
+                title={item.title}
+                author={item.author}
+                content={item.content}
+                history={this.props.history}
+              />
             )}
           />
         )}

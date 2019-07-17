@@ -10,6 +10,7 @@ import Loading from "./components/login/Loading";
 import Login from "./components/login/Login";
 import SignUp from "./components/login/SignUp";
 import Main from "./components/main/Main";
+import EditPost from "./components/edit-post/EditPost";
 
 export default class App extends React.Component {
   constructor() {
@@ -40,6 +41,10 @@ export default class App extends React.Component {
     });
   };
 
+  newPost = param => {
+    console.log(param);
+  };
+
   render() {
     const { loading, user } = this.state;
     return (
@@ -51,6 +56,7 @@ export default class App extends React.Component {
             <Switch>
               <Route exact path="/" component={user ? Main : Login} />
               <Route path="/signup" component={SignUp} />
+              <Route path="/edit_post" component={EditPost} />
             </Switch>
             {/* <Text>{JSON.stringify(user)}</Text> */}
           </NativeRouter>
