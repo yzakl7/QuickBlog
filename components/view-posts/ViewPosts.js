@@ -4,52 +4,49 @@ import { View, FlatList, StyleSheet, Text, Button } from "react-native";
 import { firestore } from "../../config/firebase";
 
 import ListItem from "./ListItem";
+import Login from "../login/Login";
+import Loading from "../login/Loading";
 
 export default class ViewPosts extends React.Component {
-  state = { user: "isaacsauriortegon@gmail.com" };
+  state = { loading: true };
   constructor() {
     super();
     this.ref = firestore.collection("posts");
   }
+
   componentDidMount() {
     this.getPosts();
   }
+  componentDidUpdate() {}
+
   getPosts = () => {
-    const { user } = this.state;
     this.ref
-      .where("author", "==", "isaacsauriortegon@gmail.com")
+      .where("author", "==", this.props.currentUser)
       .get()
       .then(querySnapshot => {
         const posts = querySnapshot.docs.map(doc => doc.data());
-        this.setState({ posts });
+        this.setState({ posts, loading: false });
       })
       .catch(function(error) {
         console.log("Error getting documents: ", error);
       });
   };
-  componentDidUpdate() {
-    console.log(this.state);
-  }
-  renderPosts = () => {
-    return <Text>Not Yet!</Text>;
-  };
+  componentDidUpdate() {}
+
   render() {
     return (
       <Fragment>
-        <FlatList
-          data={this.state.posts}
-          renderItem={({ item }) => (
-            <View style={styles.flatview}>
-              <Text>{item.title}1</Text>
-              <Text>{item.author}2</Text>
-            </View>
-          )}
-        />
-        <Button
-          title="setstate"
-          onPress={() => this.setState({ random: Math.random() })}
-        />
-        <Text>{JSON.stringify(this.state.posts)}</Text>
+        {this.state.loading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            style={styles.container}
+            data={this.state.posts}
+            renderItem={({ item }) => (
+              <ListItem title={item.title} author={item.author} />
+            )}
+          />
+        )}
       </Fragment>
     );
   }

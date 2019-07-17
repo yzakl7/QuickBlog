@@ -18,32 +18,43 @@ export default class App extends React.Component {
       loading: true
     };
   }
+  toggleLoading = loading => {
+    this.setState({ loading });
+  };
   componentDidMount() {
-    this.authSubscription = firebase.auth().onAuthStateChanged(user => {
-      this.setState({
-        loading: false,
-        user: true //temporal
-      });
-    });
+    this.persistLogin(); // to PERSIST logged in
+  }
+  componentDidUpdate() {
+    console.log(this.state);
   }
   componentWillUnmount() {
-    this.authSubscription();
+    this.authSubscription(); // to AVOID memory leaks
   }
+
+  persistLogin = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      this.setState({
+        loading: false,
+        user
+      });
+    });
+  };
+
   render() {
+    const { loading, user } = this.state;
     return (
       <Fragment>
-        <NativeRouter>
-          {this.state.user ? (
+        {this.state.loading ? (
+          <Loading />
+        ) : (
+          <NativeRouter>
             <Switch>
-              <Route exact path="/" component={Main} />
-            </Switch>
-          ) : (
-            <Switch>
-              <Route exact path="/" component={Login} />
+              <Route exact path="/" component={user ? Main : Login} />
               <Route path="/signup" component={SignUp} />
             </Switch>
-          )}
-        </NativeRouter>
+            {/* <Text>{JSON.stringify(user)}</Text> */}
+          </NativeRouter>
+        )}
       </Fragment>
     );
   }
