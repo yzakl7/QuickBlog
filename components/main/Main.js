@@ -32,15 +32,14 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "gray",
+    backgroundColor: "#ced6e3",
     alignItems: "stretch"
   }
 });
 /*
-#f5f8ff = fondo
-#fcfcfe = blancos
+#f5f8ff = blancos
 #7babed = encabezados
-#f6c2d8 = danger
-#fcebbf = warning
-#ced6e3 = borders
+#ff72ad = Attention
+#ffcc41 = warning
+#ced6e3 = fondo
 */

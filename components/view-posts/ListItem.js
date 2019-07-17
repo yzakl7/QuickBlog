@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 export default class ListItem extends Component {
   render() {
     const { title, author } = this.props;
     return (
-      <View style={styles.row}>
+      <TouchableOpacity style={styles.row}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.author}>{author}</Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -18,10 +18,10 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 4,
     padding: 10,
-    backgroundColor: "white",
-    borderLeftColor: "purple",
+    backgroundColor: "#f5f8ff",
+    borderLeftColor: "#7babed",
     borderLeftWidth: 5
   },
-  title: { fontSize: 20 },
+  title: { fontSize: 20, color: "#ca9c20" },
   author: { alignSelf: "flex-end" }
 });
