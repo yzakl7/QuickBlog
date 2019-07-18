@@ -25,8 +25,18 @@ export default class Main extends React.Component {
     const { currentUser, error, data } = this.state;
     return (
       <View style={styles.container}>
-        <ViewPosts />
-        <Text />
+        {currentUser && currentUser.email ? (
+          <ViewPosts
+            currentUser={currentUser.email}
+            history={this.props.history}
+          />
+        ) : null}
+
+        <Text>
+          {currentUser && currentUser.email
+            ? JSON.stringify(currentUser.email)
+            : ""}
+        </Text>
       </View>
     );
   }

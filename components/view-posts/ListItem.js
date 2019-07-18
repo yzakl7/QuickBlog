@@ -22,7 +22,6 @@ export default class ListItem extends Component {
 }
 const styles = StyleSheet.create({
   row: {
-    flex: 1,
     margin: 5,
     borderRadius: 4,
     padding: 10,
