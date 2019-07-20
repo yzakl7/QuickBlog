@@ -8,6 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 
+import firebase from "firebase";
 import { firestore } from "../../config/firebase";
 
 import ListItem from "./ListItem";
@@ -26,6 +27,7 @@ export default class ViewPosts extends React.Component {
       { title: "All", param: "all" }
     ];
     this.actions = [
+      { title: "Sign out", param: "signOut" },
       { title: "Update", param: "update" },
       { title: "New Post", param: "newPost" }
     ];
@@ -107,11 +109,14 @@ export default class ViewPosts extends React.Component {
           id: null
         }
       });
-    } else {
+    } else if (param === "update") {
       this.setState({
         loading: true
       });
+      this.props.setMessage("Updated!");
       this.getPosts();
+    } else {
+      firebase.auth().signOut();
     }
   };
   render() {

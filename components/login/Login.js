@@ -6,21 +6,13 @@ import Loading from "./Loading";
 import firebase from "firebase";
 
 export default class Login extends React.Component {
-  //  state = {
-  //    email: "",
-  //    password: "",
-  //    errorMessage: null,
-  //    loading: false
-  //  };
   state = {
-    email: "isaacsauriortegon@gmail.com",
-    password: "popolus",
+    email: "",
+    password: "",
     errorMessage: null,
     loading: false
   };
-  componentDidMount() {
-    this.handleLogin();
-  }
+
   handleLogin = () => {
     const { email, password } = this.state;
     this.setState({ loading: true });

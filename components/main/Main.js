@@ -17,9 +17,17 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
   }
+  setMessage = message => {
+    // if (this.state.message !== message) {
+    this.setState({ message });
+    // }
+  };
   componentDidMount() {
     const { currentUser } = firebase.auth();
-    this.setState({ currentUser, message: this.props.location.state.message });
+    this.setState({
+      currentUser,
+      message: this.props.location.state.message
+    });
   }
   render() {
     const { currentUser, error, data, message } = this.state;
@@ -30,6 +38,7 @@ export default class Main extends React.Component {
           <ViewPosts
             currentUser={currentUser.email}
             history={this.props.history}
+            setMessage={this.setMessage}
           />
         ) : null}
 
