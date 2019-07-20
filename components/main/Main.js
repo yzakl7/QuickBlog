@@ -26,7 +26,9 @@ export default class Main extends React.Component {
     const { currentUser } = firebase.auth();
     this.setState({
       currentUser,
-      message: this.props.location.state.message
+      message: this.props.location.state
+        ? this.props.location.state.message
+        : ""
     });
   }
   render() {
