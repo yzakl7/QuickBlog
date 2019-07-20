@@ -5,26 +5,27 @@ import {
   Button,
   Text,
   View,
-  BackHandler
+  BackHandler,
+  Image
 } from "react-native";
 import ViewPosts from "../view-posts/ViewPosts";
-
 import firebase from "firebase";
+import bg from "../assets/background.png";
 
 export default class Main extends React.Component {
   state = { currentUser: null };
-
   constructor(props) {
     super(props);
   }
   componentDidMount() {
     const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
+    this.setState({ currentUser, message: this.props.location.state.message });
   }
   render() {
-    const { currentUser, error, data } = this.state;
+    const { currentUser, error, data, message } = this.state;
     return (
       <View style={styles.container}>
+        <Image style={styles.bg} source={bg} />
         {currentUser && currentUser.email ? (
           <ViewPosts
             currentUser={currentUser.email}
@@ -33,7 +34,9 @@ export default class Main extends React.Component {
         ) : null}
 
         <Text>
-          {currentUser && currentUser.email
+          {message
+            ? message
+            : currentUser && currentUser.email
             ? JSON.stringify(currentUser.email)
             : ""}
         </Text>
@@ -44,7 +47,13 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "gray",
-    alignItems: "center"
+    // backgroundColor: "#ced6e3",
+    alignItems: "center",
+    zIndex: 2
+  },
+  bg: {
+    flex: 1,
+    resizeMode: "cover",
+    position: "absolute"
   }
 });

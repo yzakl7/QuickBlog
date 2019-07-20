@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 export default class ListItem extends Component {
+  componentDidMount() {}
   render() {
-    const { title, author, content } = this.props;
+    const { title, author, content, id } = this.props;
     return (
       <TouchableOpacity
         style={styles.row}
         onPress={() =>
           this.props.history.push({
             pathname: "/edit_post",
-            state: { title, author, content }
+            state: { title, author, content, id }
           })
         }
       >

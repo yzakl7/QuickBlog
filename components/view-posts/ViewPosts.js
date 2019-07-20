@@ -16,7 +16,7 @@ import Loading from "../login/Loading";
 import Filters from "../shared/Filters";
 
 export default class ViewPosts extends React.Component {
-  state = { loading: true };
+  state = { loading: true, filter: "all" };
   constructor() {
     super();
     this.ref = firestore.collection("posts");
@@ -24,6 +24,10 @@ export default class ViewPosts extends React.Component {
       { title: "My posts", param: "own" },
       { title: "All but mine", param: "hideOwn" },
       { title: "All", param: "all" }
+    ];
+    this.actions = [
+      { title: "Update", param: "update" },
+      { title: "New Post", param: "newPost" }
     ];
   }
 
@@ -36,10 +40,20 @@ export default class ViewPosts extends React.Component {
     this.ref
       // .where("author", "==", this.props.currentUser)
       .get()
-      .then(querySnapshot => {
-        const posts = querySnapshot.docs.map(doc => doc.data());
+      .then(QueryDocumentSnapshot => {
+        const posts = QueryDocumentSnapshot.docs.map(doc => ({
+          text: doc.data().text,
+          author: doc.data().author,
+          title: doc.data().title,
+          id: doc.id
+        }));
+
         const filteredPosts = posts;
-        this.setState({ filteredPosts, posts, loading: false });
+        this.setState({
+          filteredPosts,
+          posts,
+          loading: false
+        });
       })
       .catch(function(error) {
         console.log("Error getting documents: ", error);
@@ -51,7 +65,7 @@ export default class ViewPosts extends React.Component {
 
   filterPosts = filter => {
     const { posts } = this.state;
-
+    this.setState({ filter });
     var filteredPosts;
     switch (filter) {
       case "all":
@@ -72,32 +86,59 @@ export default class ViewPosts extends React.Component {
     }
     this.setState({ filteredPosts });
   };
+  renderList = ({ item }) => (
+    <ListItem
+      title={item.title}
+      key={item.id}
+      id={item.id}
+      author={item.author}
+      content={item.text}
+      history={this.props.history}
+    />
+  );
+  bottomButtons = param => {
+    if (param === "newPost") {
+      this.props.history.push({
+        pathname: "/edit_post",
+        state: {
+          title: "",
+          author: this.props.currentUser,
+          content: "",
+          id: null
+        }
+      });
+    } else {
+      this.setState({
+        loading: true
+      });
+      this.getPosts();
+    }
+  };
   render() {
-    return (
+    return this.state.loading ? (
+      <Loading />
+    ) : (
       <Fragment>
-        <Filters buttons={this.filters} action={this.filterPosts} />
-        {this.state.loading ? (
-          <Loading />
-        ) : (
-          <FlatList
-            style={styles.container}
-            // data={this.showPosts("hideOwn")}
-            data={this.state.filteredPosts}
-            renderItem={({ item }) => (
-              <ListItem
-                title={item.title}
-                author={item.author}
-                content={item.content}
-                history={this.props.history}
-              />
-            )}
-          />
-        )}
-        {/* <Text>{JSON.stringify(this.state.posts)}</Text> */}
+        <Filters
+          buttons={this.filters}
+          action={this.filterPosts}
+          selected={this.state.filter}
+        />
+        <FlatList
+          style={styles.container}
+          data={this.state.filteredPosts}
+          renderItem={this.renderList}
+        />
+        <Filters
+          buttons={this.actions}
+          action={this.bottomButtons}
+          selected={this.state.filter}
+        />
       </Fragment>
     );
   }
 }
+
 const styles = StyleSheet.create({
-  container: { borderWidth: 1, width: "100%" }
+  container: { width: "100%" }
 });
