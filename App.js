@@ -35,9 +35,6 @@ export default class App extends React.Component {
       });
     });
   };
-  newPost = param => {
-    console.log(param);
-  };
   render() {
     const { loading, user } = this.state;
     return (

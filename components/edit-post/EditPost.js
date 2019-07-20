@@ -25,7 +25,6 @@ export default class EditPost extends React.Component {
     this.ref = firestore.collection("posts");
   }
   handleBackPress = () => {
-    console.log("back");
     this.props.history.goBack();
     return true;
   };
@@ -34,7 +33,6 @@ export default class EditPost extends React.Component {
       loading: true
     });
     const { id, title, content, currentUser } = this.state;
-    console.log(id, title, content, currentUser);
     if (!id) {
       this.ref
         .add({
@@ -115,7 +113,6 @@ export default class EditPost extends React.Component {
   };
   componentDidMount() {
     this.setState(this.props.location.state);
-    console.log("edit post", this.props.location.state);
     this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.handleBackPress

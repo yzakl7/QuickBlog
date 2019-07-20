@@ -61,10 +61,6 @@ export default class ViewPosts extends React.Component {
         console.log("Error getting documents: ", error);
       });
   };
-  componentDidUpdate() {
-    console.log(this.state);
-  }
-
   filterPosts = filter => {
     const { posts } = this.state;
     this.setState({ filter });
