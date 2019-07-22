@@ -39,17 +39,19 @@ export default class ViewPosts extends React.Component {
   componentDidUpdate() {}
 
   getPosts = () => {
+    //aca obtenemos los posts
     this.ref
-      // .where("author", "==", this.props.currentUser)
       .get()
       .then(QueryDocumentSnapshot => {
         const posts = QueryDocumentSnapshot.docs.map(doc => ({
+          // OJO esto bien parecería ser un QuerySnapshort, pero necesitamos a fuercitas el
+          // ID para pasarlo como parametro y posteriormente usarlo para editar el registro
+          // en la base de datos
           text: doc.data().text,
           author: doc.data().author,
           title: doc.data().title,
           id: doc.id
         }));
-
         const filteredPosts = posts;
         this.setState({
           filteredPosts,
@@ -62,6 +64,12 @@ export default class ViewPosts extends React.Component {
       });
   };
   filterPosts = filter => {
+    // Acá aplicamos los filtros de los posts que queremos ver/buscar
+    // podrian ser llamados filtrados desde la base de datos, pero es para no estar haciendo
+    // consultas con cada vez que querramos filtrar
+    // se puede complementar con una busqueda manual donde el usuario escriba el correo
+    // de quien quiera buscar sus posts y a su vez podrían extraerse los autores de los posts
+    // para hacer un autocomplete
     const { posts } = this.state;
     this.setState({ filter });
     var filteredPosts;
@@ -118,6 +126,7 @@ export default class ViewPosts extends React.Component {
   render() {
     return this.state.loading ? (
       <Loading />
+      // no mostrar nada hasta que no termine la carga
     ) : (
       <Fragment>
         <Filters

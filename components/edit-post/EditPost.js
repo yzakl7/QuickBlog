@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   BackHandler,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   Image
@@ -19,7 +18,6 @@ import firebase from "firebase";
 
 export default class EditPost extends React.Component {
   state = { loading: false };
-
   constructor() {
     super();
     this.ref = firestore.collection("posts");
@@ -84,7 +82,6 @@ export default class EditPost extends React.Component {
         });
     }
   };
-
   delete = () => {
     const { title } = this.state;
     this.setState({
@@ -112,14 +109,14 @@ export default class EditPost extends React.Component {
       });
   };
   componentDidMount() {
-    this.setState(this.props.location.state);
+    this.setState(this.props.location.state); // aca importamos el state que tramos de la redireccion al state interno del componente
     this.backHandler = BackHandler.addEventListener(
+      // con esto escuchamos el botón de atrás del sistema, para que programemos la conducta esperada
       "hardwareBackPress",
       this.handleBackPress
     );
-
     this.setState({
-      currentUser: firebase.auth().currentUser.email
+      currentUser: firebase.auth().currentUser.email // conseguimos el email del login para corroborar que sol podamos editar nuestros propios posts
     });
   }
   componentDidUpdate() {
@@ -127,22 +124,24 @@ export default class EditPost extends React.Component {
       this.setState({ editable: true });
     }
   }
-
   componentWillUnmount() {
-    this.backHandler.remove();
+    this.backHandler.remove(); // quitamos el listener
   }
   render() {
-    const { title, author, content, editable, currentUser } = this.state
+    const { title, author, content, editable, currentUser } = this.state // desesctructurar para tener un codigo mas limpio y legible
       ? this.state
       : "";
     return this.state.loading ? (
-      <Loading text="Updating" />
+      <Loading text="Updating" /> // para no mostrar nada antes de tiempo y evitar la posibilidad de trabajar con valores aun no definidos que nos den error
     ) : (
       <View style={styles.container}>
         <Image style={styles.bg} source={bg} />
-
-        {author === currentUser ? (
+        {author === currentUser ? ( // aqui es donde usamos el curren user para mostrar o no mostrar la barra de edicion
           <View style={styles.topBar}>
+            {" "}
+            {/* Toda esta barra, en un desarrollo normal a hubiera hecho en un componente diferente,
+          incluso los botones (touchableOpacity) hubieran sido otros componentes, en este caso se quedaron ahi a modo de ejemplo
+          y tambin influyo un poco que se me estaba terminando el tiempo para concluir la app */}
             <TouchableOpacity
               style={styles.topBarButton}
               onPress={() =>
@@ -158,7 +157,6 @@ export default class EditPost extends React.Component {
             <TouchableOpacity
               style={styles.topBarButton}
               onPress={() => this.delete()}
-              // onPress={() => this.setState({ editable: !editable })}
             >
               <Text style={styles.buttonText} style={{ color: "white" }}>
                 delete
@@ -167,7 +165,6 @@ export default class EditPost extends React.Component {
             <TouchableOpacity
               style={styles.topBarButton}
               onPress={() => this.saveUpdate()}
-              // onPress={() => this.setState({ editable: !editable })}
             >
               <Text style={styles.buttonText} style={{ color: "white" }}>
                 Save
@@ -175,7 +172,6 @@ export default class EditPost extends React.Component {
             </TouchableOpacity>
           </View>
         ) : null}
-
         <ScrollView style={styles.post}>
           <EditableTitle
             multiline={true}
@@ -198,7 +194,6 @@ export default class EditPost extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "#ced6e3",
     flex: 1
   },
   post: {

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 export default class ListItem extends Component {
-  componentDidMount() {}
+// Este es otro componente que será transformado en meramente funcional en
+// los siguientes releases/ediciones/revisiones, es la plantilla de un elemento de la lista
   render() {
     const { title, author, content, id } = this.props;
     return (

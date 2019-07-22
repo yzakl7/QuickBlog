@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-
+// Firebase es una maravilla, especialemtne util para hacer MVPs
 import {
   API_KEY,
   AUTH_DOMAIN,

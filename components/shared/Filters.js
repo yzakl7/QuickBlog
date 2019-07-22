@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
 
 export default class Filters extends React.Component {
   renderFilters = () => {
+    // esto es para leer el arreglo de botones mapearlos con sus parametros
     const { buttons, action, selected } = this.props;
     if (buttons.length > 0) {
       return buttons.map((button, key) => {
@@ -23,7 +24,6 @@ export default class Filters extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <Text>{JSON.stringify(this.props.buttons)}</Text> */}
         {this.renderFilters()}
       </View>
     );

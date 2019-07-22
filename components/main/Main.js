@@ -18,15 +18,17 @@ export default class Main extends React.Component {
     super(props);
   }
   setMessage = message => {
-    // if (this.state.message !== message) {
+    // estos son los mensajitos que da la aplicacion cuando pasa algo, como login
+    // update, deleted successfuly etc...
     this.setState({ message });
-    // }
   };
   componentDidMount() {
     const { currentUser } = firebase.auth();
+    // comprobamos que estamos logueados porque no siempre venimos de
+    // Login con el email definido por medio de estado
     this.setState({
       currentUser,
-      message: this.props.location.state
+      message: this.props.location.state   // si traemos un mensaje, acá lo seteamos
         ? this.props.location.state.message
         : ""
     });
@@ -37,6 +39,8 @@ export default class Main extends React.Component {
       <View style={styles.container}>
         <Image style={styles.bg} source={bg} />
         {currentUser && currentUser.email ? (
+          // otra comprobación, esta es mas que nada para esperar que haya
+          // información para renderear
           <ViewPosts
             currentUser={currentUser.email}
             history={this.props.history}
@@ -45,6 +49,9 @@ export default class Main extends React.Component {
         ) : null}
 
         <Text>
+          {/* Aqí es donde rendeamos los mensajitos, en una siguiente edición
+          serán puestos en un snackbar, mientras tanto estan aquí y por eso
+          no tienen demasiado estilo */}
           {message
             ? message
             : currentUser && currentUser.email
@@ -58,7 +65,6 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#ced6e3",
     alignItems: "center",
     zIndex: 2
   },

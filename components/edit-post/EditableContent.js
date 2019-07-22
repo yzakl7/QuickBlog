@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  BackHandler,
-  TextInput,
-  ScrollView
-} from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 
 export default class EditPost extends React.Component {
   render() {
+    // de la misma manera que editableTitle, este puede ser un componente meramente funcional
+    // será refactorizado en una siguiente edición
     return (
       <View style={styles.container}>
         {this.props.editable ? (

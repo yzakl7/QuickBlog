@@ -23,7 +23,6 @@ export default class App extends React.Component {
   componentDidMount() {
     this.persistLogin(); // to PERSIST logged in
   }
-
   componentWillUnmount() {
     this.authSubscription(); // to AVOID memory leaks
   }
@@ -39,16 +38,17 @@ export default class App extends React.Component {
     const { loading, user } = this.state;
     return (
       <Fragment>
-        {this.state.loading ? (
-          <Loading />
+        {loading ? ( // no cargamos nada hasta que no tengamos la info del auth, sea
+          <Loading /> // que estemos o no logueados
         ) : (
           <NativeRouter>
             <Switch>
-              <Route exact path="/" component={user ? Main : Login} />
+              <Route exact path="/" component={user ? Main : Login} />{" "}
+              {/* De esta forma, cuando user sea null siempre nos dirigiremos a Login */}
               <Route path="/signup" component={SignUp} />
-              <Route path="/edit_post" component={EditPost} />
+              {user ? <Route path="/edit_post" component={EditPost} /> : null}
+              {/* no podremos tener accesso a edit post si no hay usuariio */}
             </Switch>
-            {/* <Text>{JSON.stringify(user)}</Text> */}
           </NativeRouter>
         )}
       </Fragment>

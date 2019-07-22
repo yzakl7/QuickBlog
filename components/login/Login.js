@@ -14,6 +14,8 @@ export default class Login extends React.Component {
   };
 
   handleLogin = () => {
+    // cuando entramos por primea vez a la app o nos deslogueamos, pasamos por este componente
+    // para loguearnos de vuelta, en ese caso le pasamos al path "/" el email del usuario logueado
     const { email, password } = this.state;
     this.setState({ loading: true });
     firebase
@@ -44,7 +46,11 @@ export default class Login extends React.Component {
             <Text>Sign In</Text>
             {this.state.errorMessage && (
               <Text style={{ color: "red" }}>{this.state.errorMessage}</Text>
+              // en caso de que algo vaya mal con el login, hay que avisar
             )}
+
+            {/* // A continuacion ejemplos de un form con los estilos minimos, para que se muestre
+            el estilo que ya traen los componentes "de fabrica" */}
             <TextInput
               style={styles.textInput}
               autoCapitalize="none"
@@ -61,6 +67,7 @@ export default class Login extends React.Component {
               value={this.state.password}
             />
             <Button title="Login" onPress={() => this.handleLogin()} />
+            {/* hay que dar la opcion de registrase en caso de no tener login */}
             <Button
               title="Don't have an account? Sign Up"
               onPress={() => this.props.history.push("/signup")}
